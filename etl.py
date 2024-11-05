@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv('keys.env')
 
@@ -15,3 +16,9 @@ load_dotenv()
 response_api = requests.get(API_URL) 
 status_response = response_api.status_code #working = 200
 print(status_response)
+#text do json
+response_text = response_api.text
+#gravando json
+file_json = json.loads(response_text)
+
+print(response_text)
