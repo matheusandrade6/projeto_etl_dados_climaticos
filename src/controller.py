@@ -42,5 +42,9 @@ def add_data_to_weather_table(weather_schemas: list[WeatherSchema]) -> list[Weat
             )
             db.add(db_weather)
             saved_entries.append(db_weather)
-    db.commit()
+        db.commit()
+        
+        for db_weather in saved_entries:
+            db.refresh(db_weather)
+
     return saved_entries
