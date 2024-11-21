@@ -11,13 +11,15 @@ def weather_data_fetch(city_name: str, API_KEY: str):
     if api_response.status_code == 200:
         print(f'Conexão concluída com sucesso. Cod:{api_response.status_code}')
         data = api_response.json()
-        return WeatherSchema(date=data['list']['dt'], 
-                             temperature=data['list']['main']['temp'],
-                             min_temperature=data['list']['main']['temp_min'],
-                             max_temperature=data['list']['main']['temp_max'],
-                             main_weather=data['list']['weather']['main'],
-                             description_weather=data['list']['weather']['description']
-                             )
+        data_list = list(data['list'])
+        for i in data_list:
+            return WeatherSchema(date=i['dt'], 
+                                temperature=i['main']['temp'],
+                                min_temperature=i['main']['temp_min'],
+                                max_temperature=i['main']['temp_max'],
+                                main_weather=i['weather'][0]['main'],
+                                description_weather=i['weather'][0]['description']
+                                )
     else:
         return print(f'ResponseCod:{api_response.status_code} {api_response.reason}')
     
