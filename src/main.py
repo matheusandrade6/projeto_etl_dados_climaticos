@@ -7,7 +7,7 @@ load_dotenv('../keys.env')
 
 #Lendo as variaveis de ambiente
 API_KEY = os.getenv('API_KEY')
-city_name = 'London'
+city_name = input('Insira o nome de uma cidade: ')
 
 weather_schemas = weather_data_fetch(city_name,API_KEY)
 
