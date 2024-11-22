@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 from database import SessionLocal, engine, Base
 from models import Weather
 from schema import WeatherSchema
@@ -20,7 +21,8 @@ def weather_data_fetch(city_name: str, API_KEY: str):
                             min_temperature=i['main']['temp_min'],
                             max_temperature=i['main']['temp_max'],
                             main_weather=i['weather'][0]['main'],
-                            description_weather=i['weather'][0]['description']
+                            description_weather=i['weather'][0]['description'],
+                            city=data['city']['name']
                 )  
             )
         return weather_schemas
@@ -33,12 +35,13 @@ def add_data_to_weather_table(weather_schemas: list[WeatherSchema]) -> list[Weat
     with SessionLocal() as db:
         for weather_schema in weather_schemas:
             db_weather = Weather(
-                date=weather_schema.date,
+                date=datetime.utcfromtimestamp(weather_schema.date),
                 temperature=weather_schema.temperature,
                 min_temperature=weather_schema.min_temperature,
                 max_temperature=weather_schema.max_temperature,
                 main_weather=weather_schema.main_weather,
-                description_weather=weather_schema.description_weather
+                description_weather=weather_schema.description_weather,
+                city=weather_schema.city
             )
             db.add(db_weather)
             saved_entries.append(db_weather)
