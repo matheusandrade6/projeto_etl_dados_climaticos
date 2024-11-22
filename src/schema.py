@@ -7,6 +7,7 @@ class WeatherSchema(BaseModel):
     max_temperature: float
     main_weather: str
     description_weather: str
+    city: str
 
     class Config:
         from_attributes = True
